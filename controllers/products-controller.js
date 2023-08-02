@@ -48,7 +48,41 @@ const getProductById = async (req, res, next) => {
   res.json({ product: product[0].toObject({ getters: true }) });
 };
 
-const getProductsByUserId = async (req, res, next) => {};
+const getProductsByUserId = async (req, res, next) => {
+  const userId = req.params.uid;
+
+  let userWithProducts;
+
+  try {
+    userWithProducts = await User.findById(userId).populate('products');
+  } catch (err) {
+    return next(
+      new HttpError('Fetching user products failed, please try again', 500)
+    );
+  }
+
+  if (!userWithProducts)
+    return next(
+      new HttpError('Could not find products for the provided user id', 404)
+    );
+
+  const returnProducts = userWithProducts.products.map((prod) =>
+    prod.toObject({ getters: true })
+  );
+
+  for (product of returnProducts) {
+    product.image = await getSignedUrl(
+      s3,
+      new GetObjectCommand({
+        Bucket: bucketName,
+        Key: product.image,
+      }),
+      { expiresIn: 3600 } // 60 seconds
+    );
+  }
+
+  res.json(returnProducts);
+};
 
 const createProduct = async (req, res, next) => {};
 
