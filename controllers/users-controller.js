@@ -9,7 +9,7 @@ const getUsers = async (req, res, next) => {
   let users;
 
   try {
-    users = await users.find({}, '-password');
+    users = await User.find({}, '-password');
   } catch (err) {
     const error = new HttpError('Fetching users failed, please try again', 500);
     return next(error);
@@ -102,7 +102,7 @@ const login = async (req, res, next) => {
   let existingUser, isValidPassword, token;
 
   try {
-    existingUser = User.findOne({ email: email });
+    existingUser = await User.findOne({ email: email });
   } catch (err) {
     return next(new HttpError('Login failed, please try again later', 500));
   }
