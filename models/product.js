@@ -26,3 +26,5 @@ const productSchema = new Schema({
   dateModified: { type: Date },
   owner: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
 });
+
+module.exports = mongoose.model('Product', productSchema);
