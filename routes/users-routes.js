@@ -2,9 +2,12 @@ const express = require('express');
 const { check } = require('express-validator');
 
 const usersControllers = require('../controllers/users-controller');
+const checkAuth = require('../middleware/check-auth');
+
 const router = express.Router();
 
-router.options('*', (req, res) => res.sendStatus(200));
+// router.options('*', (req, res) => res.sendStatus(200));
+router.use(checkAuth);
 
 router.get('/', usersControllers.getUsers);
 
