@@ -11,13 +11,16 @@ const contactRoutes = require('./routes/contact-routes');
 const app = express();
 const cors = require('cors');
 
+app.options('*', cors());
+
 app.use(bodyParser.json());
 
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
+const newLocal = `${process.env.CLIENT_URL}`;
 app.use(
   cors({
-    origin: '*',
+    origin: newLocal,
     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
   })
 );
