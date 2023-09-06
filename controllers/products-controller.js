@@ -232,7 +232,7 @@ const updateProduct = async (req, res, next) => {
   if (req.file) {
     fileType = req.file.mimetype.split('/')[1];
     oldImage = product[0].image;
-    newImage = `${uuid}.${fileType}`;
+    newImage = `${uuid()}.${fileType}`;
     product[0].image = newImage;
   }
 

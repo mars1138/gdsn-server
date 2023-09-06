@@ -17,7 +17,7 @@ app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use(
   cors({
-    origin: `${process.env.CLIENT_URL}`,
+    origin: '*',
     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
   })
 );
